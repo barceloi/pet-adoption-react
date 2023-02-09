@@ -1,15 +1,21 @@
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SearchParams from "./SearchParams";
 
 const App = () => {
   return (
-    <div>
+    <BrowserRouter>
       <h1>Adopt Me :</h1>
-      <SearchParams />
-    </div>
+      <Routes>
+        <Route path="/details/:id" />
+        <Route />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
+
+// TODO llevarse al form a un componente separado
