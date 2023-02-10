@@ -1,5 +1,33 @@
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import fetchPet from "./fetchPet";
+
 const Details = () => {
-  return <h2>holaa details</h2>;
+  const { id } = useParams();
+  const results = useQuery(["details", id], fetchPet);
+
+  if (results.isLoading) {
+    return (
+      <div className="loading-pane">
+        <h2 className="loader">🌀</h2>
+      </div>
+    );
+  }
+
+  const pet = results.data.pets[0];
+
+  return (
+    <div className="details">
+      <div>
+        <h2>{pet.name}</h2>
+        <h3>
+          {pet.animal} - {pet.breed} - {pet.city}, {pet.state}
+        </h3>
+        <button>Adoptar {pet.name}</button>
+        <p>{pet.description}</p>
+      </div>
+    </div>
+  );
 };
 
 export default Details;
