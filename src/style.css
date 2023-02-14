@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .search-input {
+    @apply mb-5 block w-60;
+  }
+}
+
+@layer utilities {
+  .greyed-out-disabled {
+    @apply disabled:opacity-40;
+  }
+}
