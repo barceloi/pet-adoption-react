@@ -39,15 +39,16 @@ const App = () => {
             }
           >
             <AdoptedPetContext.Provider value={adoptedPetHook}>
-              <header className="mb-10 w-full bg-gradient-to-b from-yellow-400 via-orange-500 to-red-500 p-7 text-center">
-                <Link
-                  className="text-6xl text-white hover:text-gray-200"
-                  to="/"
-                >
-                  Adopt Me!
-                </Link>
+              <header className="mb-8 bg-gray-900 py-24 px-6 sm:py-32 lg:px-8 ">
+                <div className="mx-auto max-w-2xl text-center">
+                  <Link
+                    className="text-4xl font-bold tracking-tight text-white hover:text-gray-200 sm:text-6xl"
+                    to="/"
+                  >
+                    <h1>Adopt Me!</h1>
+                  </Link>
+                </div>
               </header>
-              <h1>Adopt Me :</h1>
               <Routes>
                 <Route path="/details/:id" element={<Details />} />
                 <Route path="/" element={<SearchParams />} />

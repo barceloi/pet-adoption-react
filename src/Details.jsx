@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { lazy, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import AdoptedPetContext from "./AdoptedPetContext";
