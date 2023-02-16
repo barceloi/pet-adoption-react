@@ -3,12 +3,16 @@
   "version": "8.0.0",
   "description": "Complete Intro to React v8 project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build:client": "vite build --outDir ../dist/client",
+    "build:server": "vite build --outDir ../dist/server --ssr ServerApp.jsx",
+    "build": "npm run build:client && npm run build:server",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "Ignacio Barcelo",
@@ -31,6 +35,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.10.1",
+    "express": "^4.18.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.4.1"
