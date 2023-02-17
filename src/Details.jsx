@@ -5,6 +5,7 @@ import AdoptedPetContext from "./AdoptedPetContext";
 import ErrorBoundary from "./ErrorBoundary";
 import fetchPet from "./fetchPet";
 import Carousel from "./Carousel";
+import { PetAPIResponse } from "./APIResponsesTypes";
 
 const Modal = lazy(() => import("./Modal"));
 
@@ -14,6 +15,10 @@ const Details = () => {
   // eslint-disable-next-line no-unused-vars
   const [_, setAdoptedPet] = useContext(AdoptedPetContext);
   const { id } = useParams();
+  if (!id) {
+    throw new Error("why did you not give me an id. I wanted an id");
+  }
+
   const results = useQuery(["details", id], fetchPet);
 
   if (results.isLoading) {
