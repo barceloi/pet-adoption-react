@@ -1,20 +1,24 @@
-import { lazy, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useContext, useState } from "react";
 import AdoptedPetContext from "./AdoptedPetContext";
+import Modal from "./Modal";
 import ErrorBoundary from "./ErrorBoundary";
 import fetchPet from "./fetchPet";
 import Carousel from "./Carousel";
 
-const Modal = lazy(() => import("./Modal"));
-
 const Details = () => {
+  const { id } = useParams();
+
+  if (!id) {
+    throw new Error("no id provided to details");
+  }
+
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const [_, setAdoptedPet] = useContext(AdoptedPetContext);
-  const { id } = useParams();
   const results = useQuery(["details", id], fetchPet);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setAdoptedPet] = useContext(AdoptedPetContext);
 
   if (results.isLoading) {
     return (
@@ -24,22 +28,24 @@ const Details = () => {
     );
   }
 
-  const pet = results.data.pets[0];
+  const pet = results?.data?.pets[0];
+
+  if (!pet) {
+    throw new Error("pet not found");
+  }
 
   return (
     <div className="details">
       <Carousel images={pet.images} />
       <div>
-        <h2>{pet.name}</h2>
-        <h3>
-          {pet.animal} - {pet.breed} - {pet.city}, {pet.state}
-        </h3>
-        <button onClick={() => setShowModal(true)}>Adoptar {pet.name}</button>
+        <h1>{pet.name}</h1>
+        <h2>{`${pet.animal} — ${pet.breed} — ${pet.city}, ${pet.state}`}</h2>
+        <button onClick={() => setShowModal(true)}>Adopt {pet.name}</button>
         <p>{pet.description}</p>
         {showModal ? (
           <Modal>
             <div>
-              <h2>Quieres adoptar a {pet.name}?</h2>
+              <h1>Would you like to adopt {pet.name}?</h1>
               <div className="buttons">
                 <button
                   onClick={() => {
@@ -47,7 +53,7 @@ const Details = () => {
                     navigate("/");
                   }}
                 >
-                  Si
+                  Yes
                 </button>
                 <button onClick={() => setShowModal(false)}>No</button>
               </div>
@@ -59,12 +65,10 @@ const Details = () => {
   );
 };
 
-function DetailsErrorBoundary(props) {
+export default function DetailsErrorBoundary() {
   return (
     <ErrorBoundary>
-      <Details {...props} />
+      <Details />
     </ErrorBoundary>
   );
 }
-
-export default DetailsErrorBoundary;
