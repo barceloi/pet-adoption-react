@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import AdoptedPetContext from "./AdoptedPetContext";
@@ -10,6 +9,11 @@ import Carousel from "./Carousel";
 
 const Details = () => {
   const { id } = useParams();
+
+  if (!id) {
+    throw new Error("no id provided to details");
+  }
+
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const results = useQuery(["details", id], fetchPet);
@@ -61,10 +65,10 @@ const Details = () => {
   );
 };
 
-export default function DetailsErrorBoundary(props) {
+export default function DetailsErrorBoundary() {
   return (
     <ErrorBoundary>
-      <Details {...props} />
+      <Details />
     </ErrorBoundary>
   );
 }

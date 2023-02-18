@@ -1,12 +1,11 @@
-import { useState, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 import AdoptedPetContext from "./AdoptedPetContext";
+import Details from "./Details";
+import SearchParams from "./SearchParams";
 import { Pet } from "./APIResponsesTypes";
-
-const Details = lazy(() => import("./Details"));
-const SearchParams = lazy(() => import("./SearchParams"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,46 +17,21 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  const adoptedPetHook = useState(null as Pet | null);
+  const adoptedPet = useState(null as Pet | null);
   return (
-    <div
-      className=" m-0 p-0"
-      style={{
-        background: "url(https://pets-images.dev-apis.com/pets/wallpaperA.jpg)",
-      }}
-    >
+    <div>
       <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <Suspense
-            fallback={
-              <div className="flex min-h-screen items-center justify-center p-10">
-                <div className="animate-spin">
-                  <div className="jusify-center flex items-center">
-                    <span className="text-6xl">🐶</span>
-                  </div>
-                </div>
-              </div>
-            }
-          >
-            <AdoptedPetContext.Provider value={adoptedPetHook}>
-              <header className="mb-8 bg-gray-900 py-24 px-6 sm:py-32 lg:px-8 ">
-                <div className="mx-auto max-w-2xl text-center">
-                  <Link
-                    className="text-4xl font-bold tracking-tight text-white hover:text-gray-200 sm:text-6xl"
-                    to="/"
-                  >
-                    <h1>Adopt Me!</h1>
-                  </Link>
-                </div>
-              </header>
-              <Routes>
-                <Route path="/details/:id" element={<Details />} />
-                <Route path="/" element={<SearchParams />} />
-                <Route />
-              </Routes>
-            </AdoptedPetContext.Provider>
-          </Suspense>
-        </QueryClientProvider>
+        <AdoptedPetContext.Provider value={adoptedPet}>
+          <QueryClientProvider client={queryClient}>
+            <header>
+              <Link to="/">Adopt Me!</Link>
+            </header>
+            <Routes>
+              <Route path="/details/:id" element={<Details />} />
+              <Route path="/" element={<SearchParams />} />
+            </Routes>
+          </QueryClientProvider>
+        </AdoptedPetContext.Provider>
       </BrowserRouter>
     </div>
   );
@@ -71,5 +45,3 @@ if (!container) {
 
 const root = createRoot(container);
 root.render(<App />);
-
-// TODO llevarse al form a un componente separado
